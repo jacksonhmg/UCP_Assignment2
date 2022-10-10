@@ -82,29 +82,34 @@ void setupMap(char***map, int nR, int nC, int pR, int pC, int gR, int gC, char* 
 
 int setupGame(int argc, char* argv[]) 
 { /*used for initialising command line input, organising map setup, initialising game loop, everything set up wise*/
-    char** map;
+    mapStruct* map2 = (mapStruct*)malloc(sizeof(mapStruct));
     
-    int nR,nC,pR,pC,gR,gC,check;
+    int check;
 
-    check = readMapFile(argv, &nR, &nC, &pR, &pC, &gR, &gC);
+    check = readMapFile(argv, map2);
     
-    printf("nR equals %d and nC equals %d \n", nR, nC);
-    printf("pR equals %d and pC equals %d \n", pR, pC);
-    printf("gR equals %d and gC equals %d \n", gR, gC);
+
+
+    
+    printf("nR equals %d and nC equals %d \n", map2->nR, map2->nC);
+    printf("pR equals %d and pC equals %d \n", map2->pR, map2->pC);
+    printf("gR equals %d and gC equals %d \n", map2->gR, map2->gC);
 
     if(check)
     {
-        setupMap(&map,nR,nC,pR,pC,gR,gC, argv);
+        setupMap(&(map2->map),map2->nR,map2->nC,map2->pR,map2->pC,map2->gR,map2->gC, argv);
 
-        printMap(map,nR,nC);
+        printMap((map2->map),map2->nR,map2->nC);
 
-        gameloop(map, nR, nC, pR, pC, gR, gC);
+        gameloop((map2->map), map2->nR, map2->nC, map2->pR, map2->pC, map2->gR, map2->gC);
     }
+
+    free(map2);
 
     return 0;
 }
 
-int readMapFile(char* argv[], int *nR, int *nC, int *pR, int *pC, int *gR, int *gC)
+int readMapFile(char* argv[], mapStruct* map2)
 {
     int nRead, int1, int2, xR, xC, check;
     char c1;
@@ -114,12 +119,12 @@ int readMapFile(char* argv[], int *nR, int *nC, int *pR, int *pC, int *gR, int *
     {
         perror("Error opening f1");
     }
-    nRead = fscanf(f1, "%d %d ", &(*nR), &(*nC));
-    *nR += 2;
-    *nC += 2;
+    nRead = fscanf(f1, "%d %d ", &map2->nR, &map2->nC);
+    map2->nR += 2;
+    map2->nC += 2;
     
 
-    if(*nR < 7 || *nC < 7) /*7 because the inside can't be smaller than 5 and 7 is the number of whole array including border*/
+    if(map2->nR < 7 || map2->nC < 7) /*7 because the inside can't be smaller than 5 and 7 is the number of whole array including border*/
     {
         printf("Map size too small!\n");
         check = 0;
@@ -133,19 +138,19 @@ int readMapFile(char* argv[], int *nR, int *nC, int *pR, int *pC, int *gR, int *
         {
             if(c1 == 'P')
             {
-                *pR = int1 + 1;
-                *pC = int2 + 1;
+                map2->pR = int1 + 1;
+                map2->pC = int2 + 1;
             }
             if(c1 == 'G')
             {
-                *gR = int1 + 1;
-                *gC = int2 + 1;
+                map2->gR = int1 + 1;
+                map2->gC = int2 + 1;
             }
             if(c1 == 'X')
             {
                 xR = int1 + 1;
                 xC = int2 + 1;
-                if(xR > *nR - 2 || xC > *nC - 2)
+                if(xR > map2->nR - 2 || xC > map2->nC - 2)
                 {
                     printf("X position placed outside of map area!\n");
                     check = 0;
@@ -159,18 +164,18 @@ int readMapFile(char* argv[], int *nR, int *nC, int *pR, int *pC, int *gR, int *
         }
     } while (nRead != EOF);
     
-    if(*nR < 2 || *nC < 2 || *pR < 1 || *pC < 1 || *gR < 1 || *gC < 1) /*numbers are higher than 0 because of the addition done above*/
+    if(map2->nR < 2 || map2->nC < 2 || map2->pR < 1 || map2->pC < 1 || map2->gR < 1 || map2->gC < 1) /*numbers are higher than 0 because of the addition done above*/
     {
         printf("Cannot enter negative numbers!\n");
         check = 0;
     }
 
-    if(*pR > *nR - 2 || *pC > *nC - 2)
+    if(map2->pR > map2->nR - 2 || map2->pC > map2->nC - 2)
     {
         printf("Player position placed outside of map area!\n");
         check = 0;
     }
-    if(*gR > *nR - 2 || *gC > *nC - 2)
+    if(map2->gR > map2->nR - 2 || map2->gC > map2->nC - 2)
     {
         printf("Goal position placed outside of map area!\n");
         check = 0;

@@ -29,5 +29,6 @@ checkers.o : checkers.c checkers.h
 random.o : random.c random.h
 	$(CC) $(CFLAGS) -c random.c
 
+
 clean:
 	rm -f $(EXEC) $(OBJ)

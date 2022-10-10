@@ -15,4 +15,17 @@
 #define KEY_UP      'w'
 #define KEY_DOWN    's'
 
+
+typedef struct
+{
+    char** map;
+    int nR;
+    int nC;
+    int pR;
+    int pC;
+    int gR;
+    int gC;
+} mapStruct;
+
+
 #endif
