@@ -8,15 +8,15 @@
 #include "random.h"
 
 
-void printMap(char** map, int nR, int nC) /*for printing the map*/
+void printMap(mapStruct* map2) /*for printing the map*/
 {
     int i,j;
     system("clear");
-    for(i=0;i<nR;i++)
+    for(i=0;i<map2->nR;i++)
     {
-        for(j=0;j<nC;j++)
+        for(j=0;j<map2->nC;j++)
         {
-                printf("%c",map[i][j]);
+                printf("%c",map2->map[i][j]);
         }
         printf("\n"); /*new line after each row to show 2d array effect*/
     }
@@ -111,31 +111,31 @@ void optionsPrint()
     printf("Press d to go right\n");
 }
 
-void gameloop(char** map, int nR, int nC, int pR, int pC, int gR, int gC) /*continuous function handling the game loop*/
+void gameloop(mapStruct* map2) /*continuous function handling the game loop*/
 {
     int valid, i;
-    while(!winCond(pR,pC,gR,gC) && !loseCond(pR,pC,gR,gC,nR,nC,map)) /*while the player hasnt won or lost*/
+    while(!winCond(map2) && !loseCond(map2)) /*while the player hasnt won or lost*/
     {
         optionsPrint();
-        map[pR][pC] = ' '; /*get rid of the old player spot so that xUpdate is not based on the OLD players position; 
+        map2->map[map2->pR][map2->pC] = ' '; /*get rid of the old player spot so that xUpdate is not based on the OLD players position; 
         place it here so that we can address the old spot, get rid of it, then assign a new spot that xUpdate addresses*/
-        valid = playerInput(&pR,&pC,nR,nC,map);
-        map[pR][pC] = 'P';
+        valid = playerInput(&(map2->pR),&(map2->pC),map2->nR,map2->nC,map2->map);
+        map2->map[map2->pR][map2->pC] = 'P';
         if(valid)
         {
-            xUpdate(map, nR, nC);
+            xUpdate(map2->map, map2->nR, map2->nC);
         }
-        printMap(map,nR,nC);
+        printMap(map2);
     }
-    if(winCond(pR,pC,gR,gC))
+    if(winCond(map2))
     {
         printf("You Win!\n");
         printf("Congratulations!\n");
     }
     
-    for(i = 0; i < nR; i++)
+    for(i = 0; i < map2->nR; i++)
     {
-        free(map[i]);
+        free(map2->map[i]);
     }
-    free(map);
+    free(map2->map);
 }

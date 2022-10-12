@@ -104,30 +104,30 @@ int validatePX(char**map, int nR, int nC, int pR, int pC, char input) /*validati
     return valid;
 }
 
-int winCond(int pR, int pC, int gR, int gC)
+int winCond(mapStruct* map2)
 {
-    return (pR == gR && pC == gC) ? 1 : 0;
+    return (map2->pR == map2->gR && map2->pC == map2->gC) ? 1 : 0;
 }
 
 
-int loseCond(int pR, int pC, int gR, int gC, int nR, int nC,char** map)
+int loseCond(mapStruct* map2)
 {
     int check = 0;
 
     /*checking if possible to move at all, if not possible to move then check = 1 and therefore lose*/
-    if(!(validatePW(nR, nC, pR, pC, 'w',map) && validatePX(map,nR,nC,pR,pC,'w')) &&
-    !(validatePW(nR, nC, pR, pC, 'a',map) && validatePX(map,nR,nC,pR,pC,'a')) &&
-    !(validatePW(nR, nC, pR, pC, 's',map) && validatePX(map,nR,nC,pR,pC,'s')) && 
-    !(validatePW(nR, nC, pR, pC, 'd',map) && validatePX(map,nR,nC,pR,pC,'d')))
+    if(!(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 'w',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'w')) &&
+    !(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 'a',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'a')) &&
+    !(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 's',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'s')) && 
+    !(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 'd',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'d')))
     {
         check = 1;
     }
 
     /* checking if goal is surrounded by Xs or *'s or both */
-    if((map[gR-1][gC] == 'X' || map[gR-1][gC] == '*') && 
-    (map[gR+1][gC] == '*' || map[gR+1][gC] == 'X') && 
-    (map[gR][gC-1] == '*' || map[gR][gC-1] == 'X') && 
-    (map[gR][gC+1] == '*' || map[gR][gC+1] == 'X'))
+    if((map2->map[map2->gR-1][map2->gC] == 'X' || map2->map[map2->gR-1][map2->gC] == '*') && 
+    (map2->map[map2->gR+1][map2->gC] == '*' || map2->map[map2->gR+1][map2->gC] == 'X') && 
+    (map2->map[map2->gR][map2->gC-1] == '*' || map2->map[map2->gR][map2->gC-1] == 'X') && 
+    (map2->map[map2->gR][map2->gC+1] == '*' || map2->map[map2->gR][map2->gC+1] == 'X'))
     {
         check = 1;
     }
