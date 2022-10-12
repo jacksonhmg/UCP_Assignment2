@@ -89,18 +89,18 @@ int playerInput(int* pR, int* pC, int nR, int nC, char** map)
     return valid;
 }
 
-void xUpdate(char** map, int nR, int nC)
+void xUpdate(mapStruct* map2)
 {
     int xR, xC;
-    xR = randoms(1,nR-2); /*keep within box size*/
-    xC = randoms(1,nC-2);
+    xR = randoms(1,map2->nR-2); /*keep within box size*/
+    xC = randoms(1,map2->nC-2);
 
-    while(map[xR][xC] != ' ') /*while the random spot is not empty, retry*/
+    while(map2->map[xR][xC] != ' ') /*while the random spot is not empty, retry*/
     {
-        xR = randoms(1,nR-2);
-        xC = randoms(1,nC-2);
+        xR = randoms(1,map2->nR-2);
+        xC = randoms(1,map2->nC-2);
     }
-    map[xR][xC] = 'X';
+    map2->map[xR][xC] = 'X';
 }
 
 void optionsPrint()
@@ -123,7 +123,7 @@ void gameloop(mapStruct* map2) /*continuous function handling the game loop*/
         map2->map[map2->pR][map2->pC] = 'P';
         if(valid)
         {
-            xUpdate(map2->map, map2->nR, map2->nC);
+            xUpdate(map2);
         }
         printMap(map2);
     }

@@ -5,7 +5,7 @@
 
 void printMap(mapStruct* map2);
 int playerInput(int* pR, int* pC, int nR, int nC, char** map);
-void xUpdate(char** map, int nR, int nC);
+void xUpdate(mapStruct* map);
 void optionsPrint();
 void gameloop(mapStruct* map2);
 
