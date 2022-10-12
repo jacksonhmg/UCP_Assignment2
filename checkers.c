@@ -4,13 +4,13 @@
 
 #include "checkers.h"
 
-int validatePW(int nR, int nC, int pR, int pC, char input, char** map) /*validating against the walls*/
+int validatePW(mapStruct* map2, char input) /*validating against the walls*/
 {
     int valid;
     valid = 1; /*valid unless told otherwise*/
     if(input == 'a')
     {
-        if(pC-1 == 0)
+        if(map2->pC-1 == 0)
         {
             valid = 0;
 
@@ -25,7 +25,7 @@ int validatePW(int nR, int nC, int pR, int pC, char input, char** map) /*validat
     }
     if(input == 'd')
     {
-        if(pC+1 == nC-1)
+        if(map2->pC+1 == map2->nC-1)
         {
             valid = 0;
             
@@ -40,7 +40,7 @@ int validatePW(int nR, int nC, int pR, int pC, char input, char** map) /*validat
     }
     if(input == 's')
     {
-        if(pR+1 == nR-1)
+        if(map2->pR+1 == map2->nR-1)
         {
             valid = 0;
             #ifdef BORDERLESS
@@ -55,7 +55,7 @@ int validatePW(int nR, int nC, int pR, int pC, char input, char** map) /*validat
     }
     if(input == 'w')
     {
-        if(pR-1 == 0)
+        if(map2->pR-1 == 0)
         {
             valid = 0;
             #ifdef BORDERLESS
@@ -69,34 +69,34 @@ int validatePW(int nR, int nC, int pR, int pC, char input, char** map) /*validat
     return valid;
 }
 
-int validatePX(char**map, int nR, int nC, int pR, int pC, char input) /*validating against the Xs*/
+int validatePX(mapStruct* map2, char input) /*validating against the Xs*/
 {
     int valid;
     valid = 1;
     if(input == 'a')
     {
-        if(map[pR][pC-1] == 'X')
+        if(map2->map[map2->pR][map2->pC-1] == 'X')
         {
             valid = 0;
         }
     }
     if(input == 'd')
     {
-        if(map[pR][pC+1] == 'X')
+        if(map2->map[map2->pR][map2->pC+1] == 'X')
         {
             valid = 0;
         }
     }
     if(input == 's')
     {
-        if(map[pR+1][pC] == 'X')
+        if(map2->map[map2->pR+1][map2->pC] == 'X')
         {
             valid = 0;
         }
     }
     if(input == 'w')
     {
-        if(map[pR-1][pC] == 'X')
+        if(map2->map[map2->pR-1][map2->pC] == 'X')
         {
             valid = 0;
         }
@@ -115,10 +115,10 @@ int loseCond(mapStruct* map2)
     int check = 0;
 
     /*checking if possible to move at all, if not possible to move then check = 1 and therefore lose*/
-    if(!(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 'w',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'w')) &&
-    !(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 'a',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'a')) &&
-    !(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 's',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'s')) && 
-    !(validatePW(map2->nR, map2->nC, map2->pR, map2->pC, 'd',map2->map) && validatePX(map2->map,map2->nR,map2->nC,map2->pR,map2->pC,'d')))
+    if(!(validatePW(map2, 'w') && validatePX(map2,'w')) &&
+    !(validatePW(map2, 'a') && validatePX(map2,'a')) &&
+    !(validatePW(map2, 's') && validatePX(map2,'s')) && 
+    !(validatePW(map2, 'd') && validatePX(map2,'d')))
     {
         check = 1;
     }
