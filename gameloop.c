@@ -13,20 +13,33 @@ void printMap(mapStruct* map2) /*for printing the map*/
 {
     int i,j,colChck;
     system("clear");
-    colChck = 0;
     for(i=0;i<map2->nR;i++)
     {
         for(j=0;j<map2->nC;j++)
         {
+            colChck = 0;
             if(i == map2->recentXR && j== map2->recentXC)
             {
                 setBackground("red");
+                colChck = 1;
             }
+            if(i == map2->pR && j == map2->pC)
+            {
+                setForeground("blue");
+                colChck = 1;
+            }
+            if(i == map2->gR && j == map2->gC)
+            {
+                setForeground("green");
+                colChck = 1;
+            }
+
             printf("%c",map2->map[i][j]);
             
-            if(i == map2->recentXR && j== map2->recentXC)
+            if(colChck)
             {
                 setBackground("reset");
+                setForeground("reset");
             }
         }
         printf("\n"); /*new line after each row to show 2d array effect*/
