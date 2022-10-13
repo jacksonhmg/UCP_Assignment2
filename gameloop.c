@@ -46,7 +46,7 @@ void printMap(mapStruct* map2) /*for printing the map*/
     }
 }
 
-int playerInput(mapStruct* map2)
+int playerInput(LinkedList* list)
 {
     char input;
     int check, valid;
@@ -56,58 +56,81 @@ int playerInput(mapStruct* map2)
     enableBuffer();
     if(input == 'a')
     {
-        check = validatePW(map2, input) && validatePX(map2,input); /*if its possible to move to the position*/
+        check = validatePW(list->pHead->pData, input) && validatePX(list->pHead->pData,input); /*if its possible to move to the position*/
         if(check){
+            mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
+            *mapNew = *(list->pHead->pData);
+            transferMap(mapNew, list->pHead->pData);
+            insertFirst(list,mapNew);
             #ifdef BORDERLESS
-                if((map2->pC-1) == 0)
+                if((list->pHead->pData->pC-1) == 0)
                 {
-                    (map2->pC) =map2->nC-1;
+                    (list->pHead->pData->pC) =list->pHead->pData->nC-1;
                 }
             #endif
-            (map2->pC)--;
+            (list->pHead->pData->pC)--;
             valid = 1;
         }
     }
     if(input == 'd')
     {
-        check = validatePW(map2, input) && validatePX(map2,input);
+        check = validatePW(list->pHead->pData, input) && validatePX(list->pHead->pData,input);
         if(check){
+            mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
+            *mapNew = *(list->pHead->pData);
+            transferMap(mapNew, list->pHead->pData);
+            insertFirst(list,mapNew);
             #ifdef BORDERLESS
-                if((map2->pC+1) ==map2->nC-1)
+                if((list->pHead->pData->pC+1) ==list->pHead->pData->nC-1)
                 {
-                    (map2->pC) = 0;
+                    (list->pHead->pData->pC) = 0;
                 }
             #endif
-            (map2->pC)++;
+            (list->pHead->pData->pC)++;
             valid = 1;
         }    
     }
     if(input == 's')
     {
-        check = validatePW(map2, input) && validatePX(map2,input);
+        check = validatePW(list->pHead->pData, input) && validatePX(list->pHead->pData,input);
         if(check){
+            mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
+            *mapNew = *(list->pHead->pData);
+            transferMap(mapNew, list->pHead->pData);
+            insertFirst(list,mapNew);
             #ifdef BORDERLESS
-                if((map2->pR+1) ==map2->nR-1)
+                if((list->pHead->pData->pR+1) ==list->pHead->pData->nR-1)
                 {
-                    (map2->pR) = 0;
+                    (list->pHead->pData->pR) = 0;
                 }
             #endif
-            (map2->pR)++;
+            (list->pHead->pData->pR)++;
             valid = 1;
         }  
     }
     if(input == 'w')
     {
-        check = validatePW(map2, input) && validatePX(map2,input);
+        check = validatePW(list->pHead->pData, input) && validatePX(list->pHead->pData,input);
         if(check){
+            mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
+            *mapNew = *(list->pHead->pData);
+            transferMap(mapNew, list->pHead->pData);
+            insertFirst(list,mapNew);
             #ifdef BORDERLESS
-                if((map2->pR-1) == 0)
+                if((list->pHead->pData->pR-1) == 0)
                 {
-                    (map2->pR) =map2->nR-1;
+                    (list->pHead->pData->pR) =list->pHead->pData->nR-1;
                 }
             #endif
-            (map2->pR)--;
+            (list->pHead->pData->pR)--;
             valid = 1;
+        }
+    }
+    if(input == 'u')
+    {
+        if(list->iSize > 1)
+        {
+            removeFirst(list, &freeStruct);
         }
     }
     return valid;
@@ -139,24 +162,23 @@ void optionsPrint()
 
 void gameloop(LinkedList* list) /*continuous function handling the game loop*/
 {
-    int valid;
+    int valid, oldPR, oldPC;
     while(!winCond(list->pHead->pData) && !loseCond(list->pHead->pData)) /*while the player hasnt won or lost*/
     {
-        mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
-        *mapNew = *(list->pHead->pData);
-        transferMap(mapNew, list->pHead->pData);
         optionsPrint();
-        insertFirst(list,mapNew);
         printf("%d",list->iSize);
-        list->pHead->pData->map[list->pHead->pData->pR][list->pHead->pData->pC] = ' '; /*get rid of the old player spot so that xUpdate is not based on the OLD players position; 
-        place it here so that we can address the old spot, get rid of it, then assign a new spot that xUpdate addresses*/
-        valid = playerInput(list->pHead->pData);
-        list->pHead->pData->map[list->pHead->pData->pR][list->pHead->pData->pC] = 'P';
+        oldPR = list->pHead->pData->pR;
+        oldPC = list->pHead->pData->pC;
+        valid = playerInput(list);
         if(valid)
         {
+            list->pHead->pData->map[oldPR][oldPC] = ' '; /*get rid of the old player spot so that xUpdate is not based on the OLD players position; 
+            place it here so that we can address the old spot, get rid of it, then assign a new spot that xUpdate addresses*/
+            list->pHead->pData->map[list->pHead->pData->pR][list->pHead->pData->pC] = 'P';
             xUpdate(list->pHead->pData);
         }
         printMap(list->pHead->pData);
+        
     }
     if(winCond(list->pHead->pData))
     {

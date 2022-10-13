@@ -5,7 +5,7 @@
 #define GAMELOOP_H
 
 void printMap(mapStruct* map2);
-int playerInput(mapStruct* map2);
+int playerInput(LinkedList* list);
 void xUpdate(mapStruct* map);
 void optionsPrint();
 void gameloop(LinkedList* list);

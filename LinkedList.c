@@ -59,7 +59,7 @@ void insertLast(LinkedList* pList, void* pEntry)
 }
 
 
-void* removeFirst(LinkedList* pList)
+void* removeFirst(LinkedList* pList, listFunc funcPtr)
 {
 	LinkedListNode* pCur = pList->pHead;
 	void* pRet = pList->pHead->pData;
@@ -67,6 +67,7 @@ void* removeFirst(LinkedList* pList)
 	{
 		if(pCur->pNext == NULL)
 		{
+			/*(*funcPtr)(pCur->pData);*/
 			pList->pHead->pData = NULL;
 			pList->pHead->pNext = NULL;
 			free(pList->pHead);
@@ -76,6 +77,7 @@ void* removeFirst(LinkedList* pList)
 		else
 		{
 			pCur = pList->pHead->pNext;
+			/*(*funcPtr)(pCur->pData);*/
 			pList->pHead->pData = NULL;
 			pList->pHead->pNext = NULL;
 			free(pList->pHead);
