@@ -25,6 +25,8 @@ typedef struct
     int pC;
     int gR;
     int gC;
+    int recentXR;
+    int recentXC;
 } mapStruct;
 
 

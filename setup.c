@@ -54,9 +54,12 @@ void setupMap(mapStruct* map2, char* argv[]) /*initialise first iteration of map
     (map2->map)[map2->gR][map2->gC] = 'G';
     (map2->map)[map2->pR][map2->pC] = 'P';
 
+    map2->recentXR = -1;
+    map2->recentXC = -1;
 
 
     nRead = fscanf(f1, "%d %d ", &i, &j);
+
 
     do
     {

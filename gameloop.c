@@ -6,17 +6,28 @@
 #include "terminal.h"
 #include "checkers.h"
 #include "random.h"
+#include "color.h"
 
 
 void printMap(mapStruct* map2) /*for printing the map*/
 {
-    int i,j;
+    int i,j,colChck;
     system("clear");
+    colChck = 0;
     for(i=0;i<map2->nR;i++)
     {
         for(j=0;j<map2->nC;j++)
         {
-                printf("%c",map2->map[i][j]);
+            if(i == map2->recentXR && j== map2->recentXC)
+            {
+                setBackground("red");
+            }
+            printf("%c",map2->map[i][j]);
+            
+            if(i == map2->recentXR && j== map2->recentXC)
+            {
+                setBackground("reset");
+            }
         }
         printf("\n"); /*new line after each row to show 2d array effect*/
     }
@@ -100,6 +111,8 @@ void xUpdate(mapStruct* map2)
         xR = randoms(1,map2->nR-2);
         xC = randoms(1,map2->nC-2);
     }
+    map2->recentXR = xR;
+    map2->recentXC = xC;
     map2->map[xR][xC] = 'X';
 }
 

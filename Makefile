@@ -1,6 +1,6 @@
 CC = gcc -g
 CFLAGS = -Wall -pedantic -ansi
-OBJ = main.o setup.o gameloop.o terminal.o checkers.o random.o
+OBJ = main.o setup.o gameloop.o terminal.o checkers.o random.o color.o
 EXEC = escape
 
 ifdef BORDERLESS
@@ -17,7 +17,7 @@ main.o : main.c setup.h random.h
 setup.o : setup.c setup.h macros.h gameloop.h checkers.h
 	$(CC) $(CFLAGS) -c setup.c
 
-gameloop.o : gameloop.c gameloop.h checkers.h random.h
+gameloop.o : gameloop.c gameloop.h checkers.h random.h color.h
 	$(CC) $(CFLAGS) -c gameloop.c
 
 terminal.o : terminal.c terminal.h
@@ -29,6 +29,8 @@ checkers.o : checkers.c checkers.h
 random.o : random.c random.h
 	$(CC) $(CFLAGS) -c random.c
 
+color.o : color.c color.h
+	$(CC) $(CFLAGS) -c color.c
 
 clean:
 	rm -f $(EXEC) $(OBJ)
