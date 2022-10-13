@@ -137,31 +137,38 @@ void optionsPrint()
     printf("Press d to go right\n");
 }
 
-void gameloop(mapStruct* map2) /*continuous function handling the game loop*/
+void gameloop(LinkedList* list) /*continuous function handling the game loop*/
 {
-    int valid, i;
-    while(!winCond(map2) && !loseCond(map2)) /*while the player hasnt won or lost*/
+    int valid;
+    while(!winCond(list->pHead->pData) && !loseCond(list->pHead->pData)) /*while the player hasnt won or lost*/
     {
+        mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
+        *mapNew = *(list->pHead->pData);
+        *(mapNew->map) = *(list->pHead->pData->map);
         optionsPrint();
-        map2->map[map2->pR][map2->pC] = ' '; /*get rid of the old player spot so that xUpdate is not based on the OLD players position; 
+        insertFirst(list,mapNew);
+        printf("%d",list->iSize);
+        list->pHead->pData->map[list->pHead->pData->pR][list->pHead->pData->pC] = ' '; /*get rid of the old player spot so that xUpdate is not based on the OLD players position; 
         place it here so that we can address the old spot, get rid of it, then assign a new spot that xUpdate addresses*/
-        valid = playerInput(map2);
-        map2->map[map2->pR][map2->pC] = 'P';
+        valid = playerInput(list->pHead->pData);
+        list->pHead->pData->map[list->pHead->pData->pR][list->pHead->pData->pC] = 'P';
         if(valid)
         {
-            xUpdate(map2);
+            xUpdate(list->pHead->pData);
         }
-        printMap(map2);
+        printMap(list->pHead->pData);
     }
-    if(winCond(map2))
+    if(winCond(list->pHead->pData))
     {
         printf("You Win!\n");
         printf("Congratulations!\n");
     }
-    
+    freeLinkedList(list, &freeStruct);
+    /*freeLinkedList(list, &freeStruct);
+
     for(i = 0; i < map2->nR; i++)
-    {
-        free(map2->map[i]);
-    }
-    free(map2->map);
+    // {
+    //     free(map2->map[i]);
+    // }
+    // free(map2->map);*/
 }

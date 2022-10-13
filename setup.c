@@ -100,10 +100,8 @@ int setupGame(int argc, char* argv[])
 
         printMap(list->pHead->pData);
 
-        gameloop(list->pHead->pData);
+        gameloop(list);
     }
-
-    freeLinkedList(list, &freeData);
 
     return 0;
 }

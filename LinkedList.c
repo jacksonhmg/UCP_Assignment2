@@ -187,7 +187,13 @@ void freeLinkedList(LinkedList* pList, listFunc funcPtr)
 	free(pList);
 }
 
-void freeData(void* data)
+void freeStruct(mapStruct* data)
 {
-   free(data);
+	/*int i;
+    for(i = 0; i < data->nR; i++)
+    {
+        free(data->map[i]);
+    }
+    free(data->map);*/
+	free(data);
 }

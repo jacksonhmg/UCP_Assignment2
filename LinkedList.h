@@ -1,11 +1,12 @@
+#include "macros.h"
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-typedef void (*listFunc)(void* data);
+typedef void (*listFunc)(mapStruct* data);
 
 typedef struct LinkedListNode
 {
-	void* pData;
+	mapStruct* pData;
 	struct LinkedListNode* pNext;
 } LinkedListNode;
 
@@ -23,7 +24,7 @@ void* removeLast(LinkedList* list);
 void* removeFirst(LinkedList* pList);
 void printLinkedList(LinkedList* list, listFunc funcPtr);
 void freeLinkedList(LinkedList* list, listFunc funcPtr);
-void freeData(void* data);
+void freeStruct(mapStruct* data);
 
 
 #endif
