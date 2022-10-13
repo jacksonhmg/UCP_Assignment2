@@ -23,6 +23,7 @@ void* removeLast(LinkedList* list);
 void* removeFirst(LinkedList* pList);
 void printLinkedList(LinkedList* list, listFunc funcPtr);
 void freeLinkedList(LinkedList* list, listFunc funcPtr);
+void freeData(void* data);
 
 
 #endif

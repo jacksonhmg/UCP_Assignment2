@@ -123,7 +123,7 @@ void* removeLast(LinkedList* pList)
 			/* TODO: NULLIFY all fields in pTail */
 			/* TODO: free pTail */
 			/* TODO: set pTail = pHead = NULL */
-            void* pRet = pList->pTail->pData;
+            pRet = pList->pTail->pData;
             pList->pTail->pData = NULL;
             pList->pTail->pNext = NULL;
 			free(pList->pTail);
@@ -185,4 +185,9 @@ void freeLinkedList(LinkedList* pList, listFunc funcPtr)
 	}	
 	
 	free(pList);
+}
+
+void freeData(void* data)
+{
+   free(data);
 }

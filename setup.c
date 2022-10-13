@@ -6,6 +6,7 @@
 #include "setup.h"
 #include "gameloop.h"
 #include "checkers.h"
+#include "LinkedList.h"
 
 
 void setupMap(mapStruct* map2, char* argv[]) /*initialise first iteration of map*/
@@ -85,22 +86,24 @@ void setupMap(mapStruct* map2, char* argv[]) /*initialise first iteration of map
 
 int setupGame(int argc, char* argv[]) 
 { /*used for initialising command line input, organising map setup, initialising game loop, everything set up wise*/
+    LinkedList* list = NULL;
     mapStruct* map2 = (mapStruct*)malloc(sizeof(mapStruct));
-    
     int check;
+    list = createLinkedList();
+    insertFirst(list, map2);
 
-    check = readMapFile(argv, map2);
+    check = readMapFile(argv, list->pHead->pData);
 
     if(check)
     {
-        setupMap(map2, argv);
+        setupMap(list->pHead->pData, argv);
 
-        printMap(map2);
+        printMap(list->pHead->pData);
 
-        gameloop(map2);
+        gameloop(list->pHead->pData);
     }
 
-    free(map2);
+    freeLinkedList(list, &freeData);
 
     return 0;
 }
