@@ -144,7 +144,7 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
     {
         mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
         *mapNew = *(list->pHead->pData);
-        *(mapNew->map) = *(list->pHead->pData->map);
+        transferMap(mapNew, list->pHead->pData);
         optionsPrint();
         insertFirst(list,mapNew);
         printf("%d",list->iSize);
@@ -171,4 +171,21 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
     //     free(map2->map[i]);
     // }
     // free(map2->map);*/
+}
+
+void transferMap(mapStruct* mapNew, mapStruct* mapOld)
+{
+    int i, j;
+    mapNew->map = (char**)calloc(mapOld->nR,sizeof(char*));
+    for(i=0;i<mapOld->nR;i++)
+    {
+        (mapNew->map)[i] = (char*)calloc(mapOld->nC, sizeof(char));
+    }
+    for(i = 0; i < mapOld->nR; i++)
+    {
+        for(j = 0; j < mapOld->nC; j++)
+        {
+            mapNew->map[i][j] = mapOld->map[i][j];
+        }
+    }
 }

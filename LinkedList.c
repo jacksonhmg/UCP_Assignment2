@@ -189,11 +189,11 @@ void freeLinkedList(LinkedList* pList, listFunc funcPtr)
 
 void freeStruct(mapStruct* data)
 {
-	/*int i;
+	int i;
     for(i = 0; i < data->nR; i++)
     {
         free(data->map[i]);
     }
-    free(data->map);*/
+    free(data->map);
 	free(data);
 }

@@ -9,6 +9,7 @@ int playerInput(mapStruct* map2);
 void xUpdate(mapStruct* map);
 void optionsPrint();
 void gameloop(LinkedList* list);
+void transferMap(mapStruct* mapNew, mapStruct* mapOld);
 
 
 #endif
