@@ -77,7 +77,7 @@ void* removeFirst(LinkedList* pList, listFunc funcPtr)
 		else
 		{
 			pCur = pList->pHead->pNext;
-			/*(*funcPtr)(pCur->pData);*/
+			(*funcPtr)(pList->pHead->pData);
 			pList->pHead->pData = NULL;
 			pList->pHead->pNext = NULL;
 			free(pList->pHead);
@@ -197,5 +197,10 @@ void freeStruct(mapStruct* data)
         free(data->map[i]);
     }
     free(data->map);
+	free(data);
+}
+
+void freeData(mapStruct* data)
+{
 	free(data);
 }

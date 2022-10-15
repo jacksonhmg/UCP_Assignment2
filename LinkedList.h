@@ -25,6 +25,7 @@ void* removeFirst(LinkedList* pList, listFunc funcPtr);
 void printLinkedList(LinkedList* list, listFunc funcPtr);
 void freeLinkedList(LinkedList* list, listFunc funcPtr);
 void freeStruct(mapStruct* data);
+void freeData(mapStruct* data);
 
 
 #endif

@@ -102,6 +102,10 @@ int setupGame(int argc, char* argv[])
 
         gameloop(list);
     }
+    else
+    {
+        freeLinkedList(list, &freeData);
+    }
 
     return 0;
 }

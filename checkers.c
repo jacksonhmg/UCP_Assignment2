@@ -133,9 +133,9 @@ int loseCond(mapStruct* map2)
     }
     if(check)
     {
-        printf("\n");
         printf("You Lose!\n");
         printf("Unlucky!\n");
+        printf("\n");
     }
     return check;
 }

@@ -166,7 +166,6 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
     while(!winCond(list->pHead->pData) && !loseCond(list->pHead->pData)) /*while the player hasnt won or lost*/
     {
         optionsPrint();
-        printf("%d",list->iSize);
         oldPR = list->pHead->pData->pR;
         oldPC = list->pHead->pData->pC;
         valid = playerInput(list);
@@ -177,8 +176,7 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
             list->pHead->pData->map[list->pHead->pData->pR][list->pHead->pData->pC] = 'P';
             xUpdate(list->pHead->pData);
         }
-        printMap(list->pHead->pData);
-        
+        printMap(list->pHead->pData);   
     }
     if(winCond(list->pHead->pData))
     {
@@ -186,13 +184,6 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
         printf("Congratulations!\n");
     }
     freeLinkedList(list, &freeStruct);
-    /*freeLinkedList(list, &freeStruct);
-
-    for(i = 0; i < map2->nR; i++)
-    // {
-    //     free(map2->map[i]);
-    // }
-    // free(map2->map);*/
 }
 
 void transferMap(mapStruct* mapNew, mapStruct* mapOld)
