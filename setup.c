@@ -55,7 +55,7 @@ void setupMap(mapStruct* map2, char* argv[]) /*initialise first iteration of map
     (map2->map)[map2->gR][map2->gC] = 'G';
     (map2->map)[map2->pR][map2->pC] = 'P';
 
-    map2->recentXR = -1;
+    map2->recentXR = -1; /* initialise to avoid errors */
     map2->recentXC = -1;
 
 
@@ -69,9 +69,9 @@ void setupMap(mapStruct* map2, char* argv[]) /*initialise first iteration of map
         {
             if(c1 == 'X')
             {
-                int1 ++;
+                int1 ++; /* increase like with readMapFile (see below)*/
                 int2 ++;
-                if(!(int1 == map2->pR && int2 == map2->pC) && !(int1 == map2->gR && int2 == map2->gC))
+                if(!(int1 == map2->pR && int2 == map2->pC) && !(int1 == map2->gR && int2 == map2->gC)) /* don't print on player or goal*/
                 {
                     (map2->map)[int1][int2] = 'X';
                 }
@@ -104,7 +104,7 @@ int setupGame(int argc, char* argv[])
     }
     else
     {
-        freeLinkedList(list, &freeData);
+        freeLinkedList(list, &freeData); /* if map text input is incorrect, and the map isn't malloc'd, free the list and struct without concern for malloc*/
     }
 
     return 0;
@@ -121,7 +121,7 @@ int readMapFile(char* argv[], mapStruct* map2)
         perror("Error opening f1");
     }
     nRead = fscanf(f1, "%d %d ", &map2->nR, &map2->nC);
-    map2->nR += 2;
+    map2->nR += 2; /* increase so that if a user enters map size (5,5) they mean the size inside the borders. so technically map needs to be (7,7) */
     map2->nC += 2;
     
 
@@ -139,7 +139,8 @@ int readMapFile(char* argv[], mapStruct* map2)
         {
             if(c1 == 'P')
             {
-                map2->pR = int1 + 1;
+                map2->pR = int1 + 1; /* increase numbers like described before with map size increases. 
+                now user can enter (0,0) and have it mean the top left corner INSIDE the borders*/
                 map2->pC = int2 + 1;
             }
             if(c1 == 'G')

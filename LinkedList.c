@@ -67,7 +67,6 @@ void* removeFirst(LinkedList* pList, listFunc funcPtr)
 	{
 		if(pCur->pNext == NULL)
 		{
-			/*(*funcPtr)(pCur->pData);*/
 			pList->pHead->pData = NULL;
 			pList->pHead->pNext = NULL;
 			free(pList->pHead);
@@ -77,7 +76,7 @@ void* removeFirst(LinkedList* pList, listFunc funcPtr)
 		else
 		{
 			pCur = pList->pHead->pNext;
-			(*funcPtr)(pList->pHead->pData);
+			(*funcPtr)(pList->pHead->pData); /* added this here so that when undo is done, you free the struct correctly */
 			pList->pHead->pData = NULL;
 			pList->pHead->pNext = NULL;
 			free(pList->pHead);
@@ -99,12 +98,6 @@ void* removeLast(LinkedList* pList)
 	{		
 		if (pCur->pNext == pList->pTail)
 		{  /* If linkedlist has more than 1 node */
-			
-			/* TODO: set pRet = pTail's pData */
-			/* TODO: NULLIFY all fields in pTail */
-			/* TODO: free pTail */
-			/* TODO: set pTail = pCur */
-			/* TODO: set pTail->pNext = NULL */
             pRet = pList->pTail->pData;
             pList->pTail->pData = NULL;
             pList->pTail->pNext = NULL;
@@ -121,15 +114,10 @@ void* removeLast(LinkedList* pList)
 		}
 		else if (pCur == pList->pTail)
 		{
-			/* TODO: set pRet = pTail's pData */
-			/* TODO: NULLIFY all fields in pTail */
-			/* TODO: free pTail */
-			/* TODO: set pTail = pHead = NULL */
             pRet = pList->pTail->pData;
             pList->pTail->pData = NULL;
             pList->pTail->pNext = NULL;
 			free(pList->pTail);
-            /*pList->pHead = pList->pTail;*/
             pList->pTail = NULL;
             pList->pHead = NULL;
 
@@ -170,26 +158,20 @@ void freeLinkedList(LinkedList* pList, listFunc funcPtr)
 	
 	while (pCur)
 	{
-		/* take pCur->pNext to pTemp */
 		pTemp = pCur->pNext;
-		
-		/* clean pCur */
-		/*(*funcPtr)(pCur->pData);
-		(*funcPtr)(pCur->pNext);*/
 
 		(*funcPtr)(pCur->pData);
 		pCur->pData = NULL;
 		pCur->pNext = NULL;
 		free(pCur);
-		
-		/* set pCur = pTemp */
+
 		pCur = pTemp;		
 	}	
 	
 	free(pList);
 }
 
-void freeStruct(mapStruct* data)
+void freeStruct(mapStruct* data) /* free a created struct correctly including the malloc'd map inside it*/
 {
 	int i;
     for(i = 0; i < data->nR; i++)
@@ -200,7 +182,7 @@ void freeStruct(mapStruct* data)
 	free(data);
 }
 
-void freeData(mapStruct* data)
+void freeData(mapStruct* data) /* when the struct inside the list did not have the map inside it malloc'd yet (see setup.c)*/
 {
 	free(data);
 }

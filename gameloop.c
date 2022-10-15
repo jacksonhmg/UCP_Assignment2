@@ -18,17 +18,17 @@ void printMap(mapStruct* map2) /*for printing the map*/
         for(j=0;j<map2->nC;j++)
         {
             colChck = 0;
-            if(i == map2->recentXR && j== map2->recentXC)
+            if(i == map2->recentXR && j== map2->recentXC) /* if the iteration is at the X most recently added*/
             {
                 setBackground("red");
                 colChck = 1;
             }
-            if(i == map2->pR && j == map2->pC)
+            if(i == map2->pR && j == map2->pC) /* if the iteration is at the player position */
             {
                 setForeground("blue");
                 colChck = 1;
             }
-            if(i == map2->gR && j == map2->gC)
+            if(i == map2->gR && j == map2->gC) /* if the iteration is at the goal position */
             {
                 setForeground("green");
                 colChck = 1;
@@ -36,7 +36,7 @@ void printMap(mapStruct* map2) /*for printing the map*/
 
             printf("%c",map2->map[i][j]);
             
-            if(colChck)
+            if(colChck) /* reset for next iteration*/
             {
                 setBackground("reset");
                 setForeground("reset");
@@ -58,9 +58,9 @@ int playerInput(LinkedList* list)
     {
         check = validatePW(list->pHead->pData, input) && validatePX(list->pHead->pData,input); /*if its possible to move to the position*/
         if(check){
-            mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct));
+            mapStruct* mapNew = (mapStruct*)malloc(sizeof(mapStruct)); /* i create the new mapNode here so that they're not unnecessarily made if the player inputs an invalid move*/
             *mapNew = *(list->pHead->pData);
-            transferMap(mapNew, list->pHead->pData);
+            transferMap(mapNew, list->pHead->pData); /* transferMap transfers the map's data to a new map without actually pointing to the same pointer. necessary for malloc freeing correctly*/
             insertFirst(list,mapNew);
             #ifdef BORDERLESS
                 if((list->pHead->pData->pC-1) == 0)
@@ -128,7 +128,7 @@ int playerInput(LinkedList* list)
     }
     if(input == 'u')
     {
-        if(list->iSize > 1)
+        if(list->iSize > 1) /* to ensure no errors with undoing when there's only one iteration */
         {
             removeFirst(list, &freeStruct);
         }
@@ -147,7 +147,7 @@ void xUpdate(mapStruct* map2)
         xR = randoms(1,map2->nR-2);
         xC = randoms(1,map2->nC-2);
     }
-    map2->recentXR = xR;
+    map2->recentXR = xR; /* this is how each map struct / node keeps track of their most recent X */
     map2->recentXC = xC;
     map2->map[xR][xC] = 'X';
 }
@@ -158,6 +158,7 @@ void optionsPrint()
     printf("Press s to go down\n");
     printf("Press a to go left\n");
     printf("Press d to go right\n");
+    printf("Press u to undo\n");
 }
 
 void gameloop(LinkedList* list) /*continuous function handling the game loop*/
@@ -166,7 +167,7 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
     while(!winCond(list->pHead->pData) && !loseCond(list->pHead->pData)) /*while the player hasnt won or lost*/
     {
         optionsPrint();
-        oldPR = list->pHead->pData->pR;
+        oldPR = list->pHead->pData->pR; /* to hold for clearing player position if needed */
         oldPC = list->pHead->pData->pC;
         valid = playerInput(list);
         if(valid)
@@ -183,10 +184,11 @@ void gameloop(LinkedList* list) /*continuous function handling the game loop*/
         printf("You Win!\n");
         printf("Congratulations!\n");
     }
-    freeLinkedList(list, &freeStruct);
+    freeLinkedList(list, &freeStruct); /* final freeing */
 }
 
-void transferMap(mapStruct* mapNew, mapStruct* mapOld)
+void transferMap(mapStruct* mapNew, mapStruct* mapOld) /* transferMap is needed when creating a new map struct / node in the linked list. 
+this is because you can't make the new map struct equal the old struct because then they'll point to the same malloc'd pointer. then you have problems with freeing later on*/
 {
     int i, j;
     mapNew->map = (char**)calloc(mapOld->nR,sizeof(char*));
